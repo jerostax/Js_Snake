@@ -21,3 +21,7 @@ Contient un Snake en JavaScript et un peu de documentation
 - Chaînes des Scopes :
   le code à l'intérieur d'une fonction est le scope local <br>
   Une fonction "enfant" peut accéder au scope de sa fonction "parent" = une fonction déclarée dans une fonction peut accéder au scope de celle-ci
+
+  - Scope de Bloc (ES6):
+    Code à l'interieur d'une fonction, une condition ou une boucle
+    attention: le mot clé var sort des scope de bloc et peux donc écraser d'autres var qui ont le même nom, let et const respectent les scope de bloc, ils ne peuvent donc pas être reconnu par les scopes parents
