@@ -1,4 +1,4 @@
-window.onload = function() {
+window.onload = () => {
   const canvasWidth = 900;
   const canvasHeight = 600;
   const blockSize = 30;
@@ -13,29 +13,28 @@ window.onload = function() {
   const centreY = canvasHeight / 2;
   let score;
   let timeOut;
-  init();
 
-  function init() {
+  const init = () => {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
-    canvas.style.border = '30px solid gray';
+    canvas.style.border = '30px solid blue';
     canvas.style.margin = '50px auto';
     canvas.style.display = 'block';
     canvas.style.backgroundColor = '#ddd';
     document.body.appendChild(canvas);
     launch();
-  }
+  };
 
-  function launch() {
+  const launch = () => {
     snakee = new Snake([[6, 4], [5, 4], [4, 4], [3, 4], [2, 4]], 'right');
     applee = new Apple([10, 10]);
     score = 0;
     clearTimeout(timeOut);
     delay = 100;
     refreshCanvas();
-  }
+  };
 
-  function refreshCanvas() {
+  const refreshCanvas = () => {
     snakee.advance();
     if (snakee.checkCollision()) {
       gameOver();
@@ -58,13 +57,13 @@ window.onload = function() {
       applee.draw();
       timeOut = setTimeout(refreshCanvas, delay);
     }
-  }
+  };
 
-  function speedUp() {
+  const speedUp = () => {
     delay /= 2;
-  }
+  };
 
-  function gameOver() {
+  const gameOver = () => {
     ctx.save();
     ctx.font = 'bold 70px sans-serif';
     ctx.fillStyle = '#000';
@@ -86,9 +85,9 @@ window.onload = function() {
       centreY - 120
     );
     ctx.restore();
-  }
+  };
 
-  function drawScore() {
+  const drawScore = () => {
     ctx.save();
     ctx.font = 'bold 200px sans-serif';
     ctx.fillStyle = 'gray';
@@ -96,14 +95,15 @@ window.onload = function() {
     ctx.textBaseline = 'middle';
     ctx.fillText(score.toString(), centreX, centreY);
     ctx.restore();
-  }
+  };
 
-  function drawBlock(ctx, position) {
+  const drawBlock = (ctx, position) => {
     const x = position[0] * blockSize;
     const y = position[1] * blockSize;
     ctx.fillRect(x, y, blockSize, blockSize);
-  }
+  };
 
+  // On ne peut pas faire de arrow fx sur une fonction constructeur
   function Snake(body, direction) {
     this.body = body;
     this.direction = direction;
@@ -195,7 +195,7 @@ window.onload = function() {
       else return false;
     };
   }
-
+  // On ne peut pas faire de arrow fx sur une fonction constructeur
   function Apple(position) {
     this.position = position;
 
@@ -231,7 +231,7 @@ window.onload = function() {
     };
   }
 
-  document.onkeydown = function handleKeyDown(e) {
+  document.onkeydown = e => {
     const key = e.keyCode;
     let newDirection;
     switch (key) {
@@ -255,4 +255,6 @@ window.onload = function() {
     }
     snakee.setDirection(newDirection);
   };
+
+  init();
 };
