@@ -103,22 +103,23 @@ window.onload = () => {
     ctx.fillRect(x, y, blockSize, blockSize);
   };
 
-  // On ne peut pas faire de arrow fx sur une fonction constructeur
-  function Snake(body, direction) {
-    this.body = body;
-    this.direction = direction;
-    this.ateApple = false;
-
-    this.draw = function() {
+  // Refacto en class ES6
+  class Snake {
+    constructor(body, direction) {
+      this.body = body;
+      this.direction = direction;
+      this.ateApple = false;
+    }
+    draw() {
       ctx.save();
       ctx.fillStyle = '#ff0000';
       for (let i = 0; i < this.body.length; i++) {
         drawBlock(ctx, this.body[i]);
       }
       ctx.restore();
-    };
+    }
 
-    this.advance = function() {
+    advance() {
       const nextPosition = this.body[0].slice();
       switch (this.direction) {
         case 'left':
@@ -139,9 +140,9 @@ window.onload = () => {
       this.body.unshift(nextPosition);
       if (!this.ateApple) this.body.pop();
       else this.ateApple = false;
-    };
+    }
 
-    this.setDirection = function(newDirection) {
+    setDirection(newDirection) {
       let allowedDirections;
       switch (this.direction) {
         case 'left':
@@ -158,9 +159,9 @@ window.onload = () => {
       if (allowedDirections.indexOf(newDirection) > -1) {
         this.direction = newDirection;
       }
-    };
+    }
 
-    this.checkCollision = function() {
+    checkCollision() {
       let wallCollision = false;
       let snakeCollision = false;
       const head = this.body[0];
@@ -183,9 +184,9 @@ window.onload = () => {
       }
 
       return wallCollision || snakeCollision;
-    };
+    }
 
-    this.isEatingApple = function(appleToEat) {
+    isEatingApple(appleToEat) {
       const head = this.body[0];
       if (
         head[0] === appleToEat.position[0] &&
@@ -193,13 +194,15 @@ window.onload = () => {
       )
         return true;
       else return false;
-    };
+    }
   }
-  // On ne peut pas faire de arrow fx sur une fonction constructeur
-  function Apple(position) {
-    this.position = position;
 
-    this.draw = function() {
+  // On ne peut pas faire de arrow fx sur une fonction constructeur
+  class Apple {
+    constructor(position) {
+      this.position = position;
+    }
+    draw() {
       const radius = blockSize / 2;
       const x = this.position[0] * blockSize + radius;
       const y = this.position[1] * blockSize + radius;
@@ -209,15 +212,15 @@ window.onload = () => {
       ctx.arc(x, y, radius, 0, Math.PI * 2, true);
       ctx.fill();
       ctx.restore();
-    };
+    }
 
-    this.setNewPosition = function() {
+    setNewPosition() {
       const newX = Math.round(Math.random() * (widthInBlocks - 1));
       const newY = Math.round(Math.random() * (heightInBlocks - 1));
       this.position = [newX, newY];
-    };
+    }
 
-    this.isOnSnake = function(snakeToCheck) {
+    isOnSnake(snakeToCheck) {
       let isOnSnake = false;
       for (let i = 0; i < snakeToCheck.body.length; i++) {
         if (
@@ -228,7 +231,7 @@ window.onload = () => {
         }
       }
       return isOnSnake;
-    };
+    }
   }
 
   document.onkeydown = e => {
